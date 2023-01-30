@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { Component } from 'react';
+import { v4 as uuid } from 'uuid';
 
 import NewTodo from '../new-todo';
 import TodoList from '../todo-list/todo-list';
@@ -11,11 +11,7 @@ export default class App extends Component {
   maxId = 100;
 
   state = {
-    items: [
-      this.createTodoItem('First task', ''),
-      this.createTodoItem('Second task', ''),
-      this.createTodoItem('Third task', ''),
-  ],
+  items: [],
   filter: 'all',
   };
 
@@ -24,8 +20,7 @@ export default class App extends Component {
       label,
       status,
       date: new Date(),
-      // eslint-disable-next-line no-plusplus
-      id: this.maxId++,
+      id: uuid(),
     }
   }
 
@@ -73,7 +68,7 @@ export default class App extends Component {
         if (item.status === 'editing') {
           return { ...item, status: '' }
         }
-        if (item.id === id && item.status !== 'completed') {
+        if (item.id === id) {
           return { ...item, status: 'editing' }
         }
         return item
@@ -112,9 +107,9 @@ export default class App extends Component {
   onClearCompleted = () => {
     this.setState(({ items }) => {
       const newArr = [...items];
-      const compArr = newArr.filter((el) => el.status !== 'completed');
+      const completedArr = newArr.filter((el) => el.status !== 'completed');
       return {
-        items: compArr,
+        items: completedArr,
       }
     });
   };
@@ -135,7 +130,7 @@ export default class App extends Component {
       onEditSubmit={ this.onEditSubmit }
       filter={filter}/>
       <Footer
-      left={items.filter((item) => item.status !== 'completed').length}
+      activeItemsLeft={items.filter((item) => item.status !== 'completed').length}
       filter={filter}
       onFilterChange={ this.onFilterChange }
       clearCompleted={ this.onClearCompleted }/>

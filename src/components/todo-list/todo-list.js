@@ -1,14 +1,12 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
-// eslint-disable-next-line no-unused-vars
+
 import TodoListItem from '../todo-list-item';
 
 export default class TodoList extends Component {
   render() {
-    // eslint-disable-next-line max-len, object-curly-newline
     const { items, onDeleted, onToggleDone, onToggleEdit, editInputHandler, onEditSubmit, filter } = this.props;
 
-    // eslint-disable-next-line no-shadow
     function filterItems(items, filter) {
       if (filter === 'active') {
         return items.filter((item) => item.status === '');

@@ -12,6 +12,7 @@
     }
     },
     "rules": {
+        "no-plusplus": "off",
         "semi": "off",
         "linebreak-style": "off",
         "quotes": "off",
@@ -19,6 +20,12 @@
         "react/jsx-props-no-spreading": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": 0,
-        "indent": "off"
+        "indent": "off",
+        "no-unused-vars": "off",
+        "class-methods-use-this": "off",
+        "object-curly-spacing": "off",
+        "object-curly-newline": "off",
+        "max-len": "off",
+        "no-shadow": "off"
     }
 }

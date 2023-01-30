@@ -13,14 +13,18 @@ export default class NewTodo extends Component {
   };
 
   onSubmit = (e) => {
+    const { onItemAdded } = this.props;
+    const { label } = this.state;
     e.preventDefault();
-    this.props.onItemAdded(this.state.label);
-    this.setState({
+    onItemAdded(label);
+    this.setState(() => ({
       label: '',
-    });
+    }));
     };
 
   render() {
+    const { label } = this.state;
+
     return (
     <header className="header">
             <h1>todos</h1>
@@ -30,7 +34,7 @@ export default class NewTodo extends Component {
            placeholder="What needs to be done?"
            autoFocus
            onChange={this.onLabelChange}
-           value={this.state.label}
+           value={label}
            required/>
       </form>
     </header>

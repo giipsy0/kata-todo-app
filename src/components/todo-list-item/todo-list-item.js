@@ -1,17 +1,15 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+
 import { formatDistanceToNowStrict } from "date-fns";
 
 export default class TodoListItem extends Component {
   render() {
-    // eslint-disable-next-line object-curly-newline
     const { label, id, status, date,
       onDeleted,
       onToggleDone,
       onToggleEdit,
       editInputHandler,
-      // eslint-disable-next-line object-curly-newline
       onEditSubmit } = this.props;
 
     function onSubmitHandler(e) {
@@ -34,7 +32,7 @@ export default class TodoListItem extends Component {
       checked={status === 'completed'}
       onChange={() => onToggleDone(id)}
       />
-      <label onClick={() => onToggleDone(id)}>
+      <label>
       <span
         className="description">
         {label}
@@ -60,7 +58,7 @@ export default class TodoListItem extends Component {
 
 TodoListItem.propTypes = {
   label: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   date: PropTypes.instanceOf(Date),
 };

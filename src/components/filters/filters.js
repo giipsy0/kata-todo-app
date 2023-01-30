@@ -6,9 +6,7 @@ const filterButtons = [
   { name: 'completed', label: 'Completed' },
 ];
 
-// eslint-disable-next-line object-curly-spacing
 const Filters = ({filter, onFilterChange = () => {}}) => {
-  // eslint-disable-next-line object-curly-spacing
   const buttons = filterButtons.map(({name, label}) => {
     const isActive = name === filter;
     let classNames;

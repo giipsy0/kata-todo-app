@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line no-unused-vars
 import Filters from "../filters/filters";
 
-// eslint-disable-next-line object-curly-spacing, object-curly-newline
-const Footer = ({left, filter, onFilterChange, clearCompleted}) => (
+const Footer = ({activeItemsLeft, filter, onFilterChange, clearCompleted}) => (
     <footer className="footer">
-        <span className="todo-count">{left} items left</span>
+        <span className="todo-count">{activeItemsLeft} items left</span>
         <Filters
         filter={filter}
         onFilterChange={onFilterChange}/>
