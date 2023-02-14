@@ -34,7 +34,7 @@ export default class TodoListItem extends Component {
       onChange={() => onToggleDone(id)}
       />
       <label>
-      <span>
+      <span className="title">
         {label}
       </span>
       <Timer
