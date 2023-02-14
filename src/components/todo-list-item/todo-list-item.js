@@ -30,7 +30,7 @@ export default class TodoListItem extends Component {
       <div className="view">
       <input className='toggle'
       type='checkbox'
-      checked={status === 'completed'}
+      checked={status === "completed"}
       onChange={() => onToggleDone(id)}
       />
       <label>
