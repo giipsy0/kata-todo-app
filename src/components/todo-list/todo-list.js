@@ -5,7 +5,8 @@ import TodoListItem from '../todo-list-item';
 
 export default class TodoList extends Component {
   render() {
-    const { items, onDeleted, onToggleDone, onToggleEdit, editInputHandler, onEditSubmit, filter } = this.props;
+    const { items, onDeleted, onToggleDone, onToggleEdit,
+            editInputHandler, onEditSubmit, filter, onTimerStart, onTimerStop } = this.props;
 
     function filterItems(items, filter) {
       if (filter === 'active') {
@@ -26,6 +27,8 @@ export default class TodoList extends Component {
       onToggleEdit={onToggleEdit}
       editInputHandler={editInputHandler}
       onEditSubmit={onEditSubmit}
+      onTimerStart={() => onTimerStart(item.id)}
+      onTimerStop={() => onTimerStop(item.id)}
       />
     ));
 

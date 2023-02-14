@@ -2,30 +2,36 @@ import { Component } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import NewTodo from '../new-todo';
-import TodoList from '../todo-list/todo-list';
-import Footer from '../footer/footer';
-
-import './app.css';
+import TodoList from '../todo-list';
+import Footer from '../footer';
 
 export default class App extends Component {
-  maxId = 100;
-
   state = {
   items: [],
   filter: 'all',
   };
 
-  createTodoItem(label, status = '') {
+  componentDidMount() {
+    this.updateTime();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  createTodoItem(label, time, status = '') {
     return {
       label,
       status,
       date: new Date(),
       id: uuid(),
+      time,
+      timeStarted: false,
     }
   }
 
-  addItem = (text) => {
-    const newItem = this.createTodoItem(text);
+  addItem = (text, min, sec) => {
+    const newItem = this.createTodoItem(text, Number(min) * 60 + Number(sec));
     this.setState(({ items }) => {
       const newArr = [
         ...items,
@@ -114,12 +120,54 @@ export default class App extends Component {
     });
   };
 
+  onTimerStart = (id) => {
+    this.setState(({ items }) => ({
+      items: items.map((item) => {
+        if (id === item.id) {
+          return { ...item, timeStarted: true }
+        }
+        return item;
+      }),
+    }))
+  };
+
+  onTimerStop = (id) => {
+    this.setState(({ items }) => ({
+      items: items.map((item) => {
+        if (id === item.id) {
+          return { ...item, timeStarted: false }
+        }
+        return item;
+      }),
+    }))
+  };
+
+  updateTime = () => {
+    this.interval = setInterval(() => {
+      this.setState(({ items }) => {
+        const newArr = items.map((item) => {
+          if (item.time === 0 || item.status === 'completed') {
+            return item;
+          }
+          if (item.timeStarted) {
+            item.time -= 1;
+          }
+          return item;
+        });
+        return {
+          items: newArr,
+        };
+      });
+    }, 1000);
+  };
+
   render() {
    const { items, filter } = this.state;
 
    return (
     <section className='todoapp'>
-      <NewTodo onItemAdded={this.addItem}/>
+      <NewTodo
+      onItemAdded={this.addItem}/>
     <section className='main'>
       <TodoList
       items={ items }
@@ -128,7 +176,10 @@ export default class App extends Component {
       onToggleEdit={ this.onToggleEdit }
       editInputHandler={ this.editInputHandler}
       onEditSubmit={ this.onEditSubmit }
-      filter={filter}/>
+      filter={filter}
+      onTimerStart={ this.onTimerStart }
+      onTimerStop={ this.onTimerStop }
+      />
       <Footer
       activeItemsLeft={items.filter((item) => item.status !== 'completed').length}
       filter={filter}
