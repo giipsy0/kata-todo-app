@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-
 import { formatDistanceToNowStrict } from "date-fns";
+
+import Timer from '../timer';
 
 export default class TodoListItem extends Component {
   render() {
@@ -10,7 +11,7 @@ export default class TodoListItem extends Component {
       onToggleDone,
       onToggleEdit,
       editInputHandler,
-      onEditSubmit } = this.props;
+      onEditSubmit, time, onTimerStart, onTimerStop } = this.props;
 
     function onSubmitHandler(e) {
       e.preventDefault();
@@ -33,12 +34,16 @@ export default class TodoListItem extends Component {
       onChange={() => onToggleDone(id)}
       />
       <label>
-      <span
-        className="description">
+      <span>
         {label}
       </span>
+      <Timer
+      time={time}
+      onTimerStart={onTimerStart}
+      onTimerStop={onTimerStop}
+      />
       <span
-      className='created'>created {formatDistanceToNowStrict(date)} ago</span>
+      className="description">created {formatDistanceToNowStrict(date)} ago</span>
       </label>
       <button type="button"
               className="icon icon-edit"

@@ -26,6 +26,7 @@
         "object-curly-spacing": "off",
         "object-curly-newline": "off",
         "max-len": "off",
-        "no-shadow": "off"
+        "no-shadow": "off",
+        "no-param-reassign":"off"
     }
 }
