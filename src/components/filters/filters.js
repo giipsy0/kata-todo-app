@@ -1,20 +1,16 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-const filterButtons = [
-  { name: 'all', label: 'All' },
-  { name: 'active', label: 'Active' },
-  { name: 'completed', label: 'Completed' },
-];
+export default function Filters(props) {
+  const { filter, onFilterChange } = props
+  const filterButtons = [
+    { name: 'all', label: 'All' },
+    { name: 'active', label: 'Active' },
+    { name: 'completed', label: 'Completed' },
+  ]
 
-const Filters = ({filter, onFilterChange = () => {}}) => {
   const buttons = filterButtons.map(({name, label}) => {
     const isActive = name === filter;
-    let classNames;
-
-    if (isActive) {
-      classNames = 'selected';
-    }
-
+    const classNames = isActive ? 'selected' : ''
     return (
         <li key={name}>
         <button
@@ -23,24 +19,18 @@ const Filters = ({filter, onFilterChange = () => {}}) => {
             onClick={() => onFilterChange(name)}
             className={classNames}>{label}</button>
         </li>
-    );
-  });
+    )
+  })
 
-  return (
-      <ul className="filters">
-        { buttons }
-      </ul>
-  );
-};
-
-export default Filters;
+  return <ul className="filters">{ buttons }</ul>
+}
 
 Filters.defaultProps = {
   filter: 'all',
   onFilterChange: () => {},
-};
+}
 
 Filters.propTypes = {
   filter: PropTypes.string,
   onFilterChange: PropTypes.func,
-};
+}

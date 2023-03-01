@@ -1,31 +1,52 @@
-import { Component } from "react";
+import { useState, useEffect } from "react"
 
-import { getPadTime } from '../../utilities';
+export default function Timer(props) {
+    const {timer, updateTime, status} = props
+    const [timeStarted, switchTimer] = useState(false)
+    const [time, setTime] = useState(null)
+    const [tick, setTick] = useState(timer)
 
-export default class Timer extends Component {
-    formatTime = (timeState) => {
-        const min = getPadTime(Math.floor(timeState / 60));
-        const sec = getPadTime(timeState - min * 60);
-        return `${min}:${sec}`;
-    };
+    const format = (sec) => [Math.floor((sec / 60) % 60), Math.floor(sec % 60)]
+        .join(':')
+        .replace(/\b(\d)\b/g, '0$1')
 
-    render() {
-        const { onTimerStart, onTimerStop, time } = this.props;
-        const displayTime = this.formatTime(time);
-        return (
-            <span className="description">
+    const timerTick = () => {
+        if (!timeStarted) return
+        if (status === 'completed') {
+            setTime(clearInterval(time))
+        } else if (tick === 0) {
+            switchTimer(() => false)
+            setTime(clearInterval(time))
+        }
+        setTick((s) => s - 1)
+    }
+
+    useEffect(() => {
+        updateTime(tick)
+    }, [tick])
+
+    useEffect(() => {
+        const counter = setInterval(() => timerTick(), 1000)
+        return () => clearInterval(counter)
+    })
+
+    const onStart = () => switchTimer(() => true)
+
+    const onStop = () => switchTimer(() => false)
+
+    return (
+        <span className="description">
                 <div className="container">
                 <button
                 className="icon icon-play"
                 type="button"
-                onClick={onTimerStart}/>
+                onClick={onStart}/>
                 <button
                 className="icon icon-pause"
                 type="button"
-                onClick={onTimerStop}/>
-                <div className="timer">{displayTime}</div>
+                onClick={onStop}/>
+                <div className="timer">{format(tick)}</div>
                 </div>
             </span>
-        )
-    }
+    )
 }

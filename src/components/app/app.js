@@ -1,192 +1,117 @@
-import { Component } from 'react';
-import { v4 as uuid } from 'uuid';
+import { useState } from 'react'
+import { v4 as uuid } from 'uuid'
 
-import NewTodo from '../new-todo';
-import TodoList from '../todo-list';
-import Footer from '../footer';
+import NewTodo from '../new-todo'
+import TodoList from '../todo-list'
+import Footer from '../footer'
 
-export default class App extends Component {
-  state = {
-  items: [],
-  filter: 'all',
-  };
+export default function App() {
+  const [items, setItems] = useState([])
+  const [filter, setFilter] = useState('all')
 
-  componentDidMount() {
-    this.updateTime();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  createTodoItem(label, time, status = '') {
-    return {
+  const createTodoItem = (label, timer, status = '') => ({
       label,
       status,
       date: new Date(),
       id: uuid(),
-      time,
-      timeStarted: false,
-    }
+      timer,
+    })
+
+  const addItem = (text, sec) => {
+    const time = Number.isNaN(sec) ? 0 : Number(sec)
+    const newItem = createTodoItem(text, time)
+    const newArr = [...items, newItem]
+    setItems(newArr)
   }
 
-  addItem = (text, min, sec) => {
-    const newItem = this.createTodoItem(text, Number(min) * 60 + Number(sec));
-    this.setState(({ items }) => {
-      const newArr = [
-        ...items,
-        newItem,
-      ];
-      return {
-        items: newArr,
-      };
-    });
-  };
+  const deleteItem = (id) => {
+    const newArr = items.filter((item) => item.id !== id)
+    setItems(newArr)
+  }
 
-  deleteItem = (id) => {
-    this.setState(({ items }) => {
-      const idx = items.findIndex((el) => el.id === id);
-      const newData = [
-        ...items.slice(0, idx),
-        ...items.slice(idx + 1),
-      ];
-      return {
-        items: newData,
-      };
-    })
-  };
-
-  onToggleDone = (id) => {
-    this.setState(({ items }) => ({
-      items: items.map((item) => {
-        if (id === item.id) {
-          const status = item.status === '' ? 'completed' : ''
-          return { ...item, status }
-        }
-        return item;
-      }),
-    }));
-  };
-
-  onToggleEdit = (id) => {
-    this.setState(({ items }) => ({
-      items: items.map((item) => {
-        if (item.status === 'editing') {
-          return { ...item, status: '' }
-        }
-        if (item.id === id) {
-          return { ...item, status: 'editing' }
-        }
-        return item
-      }),
-    }));
-  };
-
-  editInputHandler = (id, value) => {
-    this.setState(({ items }) => ({
-      items: items.map((item) => {
-        if (item.id === id) {
-          return { ...item, label: value }
-        }
-        return item
-      }),
-    }));
-  };
-
-  onEditSubmit = (id) => {
-    this.setState(({ items }) => ({
-      items: items.map((item) => {
-        if (item.id === id) {
-          return { ...item, status: '' }
-        }
-        return item
-      }),
-    }));
-  };
-
-  onFilterChange = (value) => {
-    this.setState({
-      filter: value,
-    });
-  };
-
-  onClearCompleted = () => {
-    this.setState(({ items }) => {
-      const newArr = [...items];
-      const completedArr = newArr.filter((el) => el.status !== 'completed');
-      return {
-        items: completedArr,
+  const onToggleDone = (id) => {
+    const newArr = items.map((item) => {
+      if (id === item.id) {
+        item.status = item.status === '' ? 'completed' : ''
       }
-    });
-  };
+      return item
+    })
+    setItems(newArr)
+  }
 
-  onTimerStart = (id) => {
-    this.setState(({ items }) => ({
-      items: items.map((item) => {
-        if (id === item.id) {
-          return { ...item, timeStarted: true }
-        }
-        return item;
-      }),
-    }))
-  };
+  const onToggleEdit = (id) => {
+    const newArr = items.map((item) => {
+      if (item.status === 'editing') {
+        item.status = ''
+      }
+      if (item.id === id) {
+        item.status = 'editing'
+      }
+      return item
+    })
+    setItems(newArr)
+  }
 
-  onTimerStop = (id) => {
-    this.setState(({ items }) => ({
-      items: items.map((item) => {
-        if (id === item.id) {
-          return { ...item, timeStarted: false }
-        }
-        return item;
-      }),
-    }))
-  };
+  const editInputHandler = (id, value) => {
+    const newArr = items.map((item) => {
+      if (item.id === id) {
+        item.label = value
+      }
+      return item
+    })
+    setItems(newArr)
+  }
 
-  updateTime = () => {
-    this.interval = setInterval(() => {
-      this.setState(({ items }) => {
-        const newArr = items.map((item) => {
-          if (item.time === 0 || item.status === 'completed') {
-            return item;
-          }
-          if (item.timeStarted) {
-            item.time -= 1;
-          }
-          return item;
-        });
-        return {
-          items: newArr,
-        };
-      });
-    }, 1000);
-  };
+  const onEditSubmit = (id) => {
+    const newArr = items.map((item) => {
+      if (item.id === id) {
+        item.status = ''
+      }
+      return item
+    })
+    setItems(newArr)
+  }
 
-  render() {
-   const { items, filter } = this.state;
+  const onFilterChange = (value) => {
+    setFilter(value)
+  }
 
-   return (
+  const onClearCompleted = () => {
+    const newArr = items.filter(({ status }) => status !== 'completed')
+    setItems(newArr)
+  }
+
+  const updateTime = (id, newTime) => {
+    const newArr = items.map((item) => {
+      if (item.id === id) {
+        item.timer = newTime
+      }
+      return item
+    })
+    setItems(newArr)
+  }
+
+  return (
     <section className='todoapp'>
       <NewTodo
-      onItemAdded={this.addItem}/>
+      onItemAdded={addItem}/>
     <section className='main'>
       <TodoList
       items={ items }
-      onDeleted={ this.deleteItem }
-      onToggleDone={ this.onToggleDone }
-      onToggleEdit={ this.onToggleEdit }
-      editInputHandler={ this.editInputHandler}
-      onEditSubmit={ this.onEditSubmit }
+      onDeleted={ deleteItem }
+      onToggleDone={ onToggleDone }
+      onToggleEdit={ onToggleEdit }
+      editInputHandler={ editInputHandler}
+      onEditSubmit={ onEditSubmit }
+      updateTime={ updateTime }
       filter={filter}
-      onTimerStart={ this.onTimerStart }
-      onTimerStop={ this.onTimerStop }
       />
       <Footer
       activeItemsLeft={items.filter((item) => item.status !== 'completed').length}
       filter={filter}
-      onFilterChange={ this.onFilterChange }
-      clearCompleted={ this.onClearCompleted }/>
+      onFilterChange={ onFilterChange }
+      clearCompleted={ onClearCompleted }/>
     </section>
     </section>
   )
-  }
 }

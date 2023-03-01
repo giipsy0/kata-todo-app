@@ -1,55 +1,34 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
-export default class NewTodo extends Component {
-  state = {
-    label: '',
-    min: '',
-    sec: '',
-  };
+export default function NewTodo(props) {
+  const { onItemAdded } = props
+  const [label, setLabel] = useState('')
+  const [time, setTime] = useState({ min: '', sec: '' })
 
-  onLabelChange = (e) => {
-    this.setState({
-      label: e.target.value,
-    });
-  };
-
-  onMinChange = (e) => {
-    this.setState({
-      min: e.target.value,
-    });
+  const onLabelChange = (e) => {
+    const { value } = e.target
+    setLabel(value)
   }
 
-  onSecChange = (e) => {
-    this.setState({
-      sec: e.target.value,
-    });
+  const onSubmit = (e) => {
+    e.preventDefault()
+    const sec = Math.abs(Number(time.min) * 60) + Math.abs(Number(time.sec))
+    onItemAdded(label, sec)
+    setLabel('')
+    setTime({ min: '', sec: '' })
   }
 
-  onSubmit = (e) => {
-    const { onItemAdded } = this.props;
-    const { label, sec, min } = this.state;
-    e.preventDefault();
-    onItemAdded(label, min, sec);
-    this.setState({
-      label: '',
-      min: '',
-      sec: '',
-    });
-  };
-
-  render() {
-    const { label, min, sec } = this.state;
-    return (
+  return (
     <header className="header">
             <h1>todos</h1>
-      <form className="new-todo-form" onSubmit={this.onSubmit}>
+      <form className="new-todo-form" onSubmit={onSubmit}>
         <input
           type="text"
           className="new-todo"
           name="description"
           placeholder="What need to be done?"
-          onChange={this.onLabelChange}
+          onChange={onLabelChange}
           value={label}
           required
           autoFocus
@@ -58,31 +37,30 @@ export default class NewTodo extends Component {
           type="text"
           className="new-todo-form__timer"
           name="minutes"
-          value={min}
+          value={time.min}
           placeholder="Min"
-          onChange={this.onMinChange}
+          onChange={(e) => setTime((prev) => ({ ...prev, min: e.target.value }))}
           required
         />
         <input
           type="text"
           className="new-todo-form__timer"
           name="seconds"
-          value={sec}
+          value={time.sec}
           placeholder="Sec"
-          onChange={this.onSecChange}
+          onChange={(e) => setTime((prev) => ({ ...prev, sec: e.target.value }))}
           required
         />
         <button type="submit" aria-label="submission" className="new-todo-form-btn" />
       </form>
     </header>
-    );
-  }
+  )
 }
 
 NewTodo.defaultProps = {
   onItemAdded: () => {},
-};
+}
 
 NewTodo.propTypes = {
   onItemAdded: PropTypes.func,
-};
+}
