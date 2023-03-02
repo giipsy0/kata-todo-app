@@ -28,5 +28,12 @@
         "max-len": "off",
         "no-shadow": "off",
         "no-param-reassign":"off"
+    },
+    "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"]
+          }
+        }
     }
 }
