@@ -9,9 +9,11 @@ export default class NewTodo extends Component {
   };
 
   onLabelChange = (e) => {
-    this.setState({
+    if (e !== ' ') {
+      this.setState({
       label: e.target.value,
     });
+    }
   };
 
   onMinChange = (e) => {
