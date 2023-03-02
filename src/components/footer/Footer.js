@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import Filters from "../Filters"
+import Filters from "../filters"
 
 export default function Footer(props) {
   const { items, filter, onFilterChange, clearCompleted } = props

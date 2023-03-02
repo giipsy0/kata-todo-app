@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 
 import NewTodo from '../NewTodo'
 import TodoList from '../TodoList'
-import Footer from '../Footer'
+import Footer from '../footer'
 
 export default function App() {
   const [items, setItems] = useState([])
