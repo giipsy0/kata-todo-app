@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
 
-import Filters from "../filters/filters"
+import Filters from "../Filters"
 
 export default function Footer(props) {
-  const { activeItemsLeft, filter, onFilterChange, clearCompleted } = props
+  const { items, filter, onFilterChange, clearCompleted } = props
+  const activeItemsLeft = items.filter((item) => item.status !== 'completed').length
 
   return (
     <footer className="footer">

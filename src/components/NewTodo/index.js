@@ -1,4 +1,4 @@
 // eslint-disable-next-line import/no-unresolved, import/extensions
-import Filters from "./Filters";
+import NewTodo from "./NewTodo";
 
-export default Filters;
+export default NewTodo;

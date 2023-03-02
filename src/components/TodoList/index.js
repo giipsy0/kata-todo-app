@@ -1,4 +1,4 @@
 // eslint-disable-next-line import/no-unresolved, import/extensions
-import Filters from "./Filters";
+import TodoList from "./TodoList"
 
-export default Filters;
+export default TodoList

@@ -8,7 +8,9 @@ export default function NewTodo(props) {
 
   const onLabelChange = (e) => {
     const { value } = e.target
-    setLabel(value)
+    if (value !== ' ') {
+      setLabel(value)
+    }
   }
 
   const onSubmit = (e) => {
@@ -34,19 +36,19 @@ export default function NewTodo(props) {
           autoFocus
         />
         <input
-          type="text"
           className="new-todo-form__timer"
           name="minutes"
           value={time.min}
+          max={59}
           placeholder="Min"
           onChange={(e) => setTime((prev) => ({ ...prev, min: e.target.value }))}
           required
         />
         <input
-          type="text"
           className="new-todo-form__timer"
           name="seconds"
           value={time.sec}
+          max={59}
           placeholder="Sec"
           onChange={(e) => setTime((prev) => ({ ...prev, sec: e.target.value }))}
           required

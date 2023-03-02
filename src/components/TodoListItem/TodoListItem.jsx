@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { formatDistanceToNowStrict } from "date-fns"
 
-import Timer from '../timer'
+import Timer from '../Timer'
 
 export default function TodoListItem(props) {
   const { label, id, status, date, timer, onDeleted, onToggleDone, onToggleEdit, editInputHandler,

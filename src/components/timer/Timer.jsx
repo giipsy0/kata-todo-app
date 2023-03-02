@@ -14,11 +14,13 @@ export default function Timer(props) {
         if (!timeStarted) return
         if (status === 'completed') {
             setTime(clearInterval(time))
+            switchTimer(() => false)
         } else if (tick === 0) {
             switchTimer(() => false)
             setTime(clearInterval(time))
+        } else {
+            setTick((s) => s - 1)
         }
-        setTick((s) => s - 1)
     }
 
     useEffect(() => {

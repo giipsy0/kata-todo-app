@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import NewTodo from '../new-todo'
-import TodoList from '../todo-list'
-import Footer from '../footer'
+import NewTodo from '../NewTodo'
+import TodoList from '../TodoList'
+import Footer from '../Footer'
 
 export default function App() {
   const [items, setItems] = useState([])
@@ -107,7 +107,7 @@ export default function App() {
       filter={filter}
       />
       <Footer
-      activeItemsLeft={items.filter((item) => item.status !== 'completed').length}
+      items={items}
       filter={filter}
       onFilterChange={ onFilterChange }
       clearCompleted={ onClearCompleted }/>

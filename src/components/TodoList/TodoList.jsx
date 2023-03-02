@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types'
 
-import TodoListItem from '../todo-list-item'
+import TodoListItem from '../TodoListItem'
 
 export default function TodoList(props) {
   const { items, onDeleted, onToggleDone, onToggleEdit,
